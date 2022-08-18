@@ -4,6 +4,7 @@ package com.dd.api.controller;
 import com.dd.api.model.DefaultResponse;
 import com.dd.api.model.ExtractCondition;
 import com.dd.api.model.StatusEnum;
+import com.dd.api.service.ExtractHiveService;
 import com.dd.api.service.QueryGenerator;
 import com.dd.api.util.ResponseUtils;
 import io.swagger.annotations.Api;
@@ -29,8 +30,8 @@ public class ExtractHiveController {
     @Autowired
     QueryGenerator queryGenerator;
 
-    //@Autowired
-   // ExtractHiveService extractHiveService;
+    @Autowired
+    ExtractHiveService extractHiveService;
 
     @ApiOperation("Get classifications guid")
     @GetMapping("/extract")
@@ -41,16 +42,12 @@ public class ExtractHiveController {
 
         long startMillis = System.currentTimeMillis();
         String query = queryGenerator.genFullQuery(extractCondition);
-        //extractHiveService.extractHiveTable(query);
+        extractHiveService.extractHiveTable(query);
         String endMillis = String.valueOf(System.currentTimeMillis() - startMillis);
         log.info("총 처리 시간은 {}ms 입니다.", endMillis);
 
         return ResponseUtils.getResponse(StatusEnum.OK,
                 "classifications guid search success!!",query);
     }
-
-
-
-
 }
 
